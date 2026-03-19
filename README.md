@@ -6,4 +6,5 @@ My personal modules for use with AWS
 
 ## Modules
 
+- [alb-ingressclass/](modules/alb-ingressclass) - Defines ingress class to be used by [alb](modules/alb)
 - [alb](modules/alb) - ALB setup module

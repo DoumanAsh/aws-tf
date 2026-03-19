@@ -4,6 +4,12 @@ variable "name" {
   nullable    = false
 }
 
+variable "class_name" {
+  type        = string
+  description = "Ingress class name to be used. If not provided, MUST create default IngressClass"
+  default     = null
+}
+
 variable "tags" {
   type        = map(string)
   description = "Optional list of tags to attach to the resources"

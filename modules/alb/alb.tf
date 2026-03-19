@@ -71,7 +71,7 @@ resource "kubernetes_ingress_v1" "alb" {
   }
 
   spec {
-    ingress_class_name = "alb"
+    ingress_class_name = var.class_name
 
     rule {
       http {

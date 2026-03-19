@@ -4,6 +4,12 @@ Setup AWS load balancer as external load balancer for your kubernetes services i
 
 This module will create kubernetes ingress with class name `alb` which configures AWS ALB via annotations
 
+## Dependencies
+
+Requires to create [IngressClass](https://docs.aws.amazon.com/eks/latest/userguide/auto-configure-alb.html)
+
+[alb-ingressclass](../alb-ingressclass) can be used to set it up
+
 ## Required parameters
 
 | Parameter               | Description |
@@ -27,6 +33,7 @@ This module will create kubernetes ingress with class name `alb` which configure
 | Parameter              | Description |
 |------------------------|-------------|
 | `tags`                 | List of tags to attach to the resources |
+| `class_name`           | Ingress class name to be used. If not provided, MUST create default IngressClass |
 | `protocol_version`     | Application protocol on destination pods. Defaults to HTTP1. Possible values: HTTP1, HTTP2, GRPC |
 | `ssl_policy`           | Specifies security policy to use for TLS handshake. [Reference](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/describe-ssl-policies.html#tls-security-policies) |
 | `target_type`          | Describes type of services you're targetting. Use 'ip' for direct network routing to the pod via ClustIP service. Use 'instance' to target NodePort services. Defaults to 'ip' |

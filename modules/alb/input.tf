@@ -90,3 +90,12 @@ variable "keep_alive_time_seconds" {
   description = "Ingress Keep alive time for client. I.e. how long allow connection to persist. Defaults to 7200s(2 hours)"
   default     = 7200
 }
+
+variable "default_route" {
+  type = object({
+    service_name = string
+    port         = number
+  })
+  description = "Defines service which shall be used as default by the load balancer in case no other `routes` matches"
+  default     = null
+}

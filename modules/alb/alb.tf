@@ -71,6 +71,18 @@ resource "kubernetes_ingress_v1" "alb" {
   }
 
   spec {
+    dynamic "default_backend" {
+      for_each = var.default_route == null ? [] : [var.default_route]
+      content {
+        service {
+          name = default_backend.value.service_name
+          port {
+            number = default_backend.value.port
+          }
+        }
+      }
+    }
+
     ingress_class_name = var.class_name
 
     rule {

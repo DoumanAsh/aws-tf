@@ -34,6 +34,7 @@ Requires to create [IngressClass](https://docs.aws.amazon.com/eks/latest/usergui
 |------------------------|-------------|
 | `tags`                 | List of tags to attach to the resources |
 | `class_name`           | Ingress class name to be used. If not provided, MUST create default IngressClass |
+| `default_route`        | Defines `service_name` and `port` of the default route to be used in case no other route is matched. |
 | `protocol_version`     | Application protocol on destination pods. Defaults to HTTP1. Possible values: HTTP1, HTTP2, GRPC |
 | `ssl_policy`           | Specifies security policy to use for TLS handshake. [Reference](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/describe-ssl-policies.html#tls-security-policies) |
 | `target_type`          | Describes type of services you're targetting. Use 'ip' for direct network routing to the pod via ClustIP service. Use 'instance' to target NodePort services. Defaults to 'ip' |

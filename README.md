@@ -8,3 +8,4 @@ My personal modules for use with AWS
 
 - [alb-ingressclass/](modules/alb-ingressclass) - Defines ingress class to be used by [alb](modules/alb)
 - [alb](modules/alb) - ALB setup module
+- [aws-eks-config-oneshot-daemon](modules/aws-eks-config-oneshot-daemon) - Module to create oneshot daemon for purpose of performing one time node initialization

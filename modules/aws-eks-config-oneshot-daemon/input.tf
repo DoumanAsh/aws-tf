@@ -12,6 +12,7 @@ variable "namespace" {
 
 # We can use aws_eks_cluster.version to fetch exact server version, if we want to be 100% safe
 # https://registry.terraform.io/providers/-/aws/latest/docs/data-sources/eks_cluster#version-2
+# Use https://explore.ggcr.dev/ to explore available tags of registry.k8s.io/kubectl
 variable "k8s_version" {
   description = "Kubernetes version to target. This is used to select version of registry.k8s.io/kubectl container that executes actions"
   type        = string

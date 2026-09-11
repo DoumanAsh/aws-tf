@@ -103,7 +103,8 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
           name  = "node-config-init"
           image = "public.ecr.aws/docker/library/busybox:stable-musl"
           security_context {
-            privileged = true
+            privileged  = true
+            run_as_user = 0
           }
 
           resources {
@@ -119,12 +120,23 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
 
           command = ["/bin/sh", "-c"]
           args    = [join("\n", [local.settings_prelude, var.settings_script])]
-        }
+        } # busybox container
 
         # Apply label with version to identify node that already performed config init
         container {
           image = "registry.k8s.io/kubectl:${var.k8s_version}"
           name  = "node-label-apply"
+          security_context {
+            privileged                 = false
+            run_as_non_root            = true
+            run_as_user                = 911
+            run_as_group               = 911
+            allow_privilege_escalation = false
+            read_only_root_filesystem  = false
+            capabilities {
+              drop = ["all"]
+            }
+          }
 
           resources {
             limits = {
@@ -147,6 +159,17 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
             }
           }
 
+          # KUBECACHEDIR
+          env {
+            name  = "KUBECACHEDIR"
+            value = "/tmp/.kube/cache"
+          }
+
+          volume_mount {
+            name       = "tmp"
+            mount_path = "/tmp"
+          }
+
           command = ["kubectl"]
           args = [
             "label",
@@ -155,6 +178,12 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
             "${local.label_name}=${local.label_version}",
             "--overwrite"
           ]
+        } # kubectl container
+
+        volume {
+          name = "tmp"
+          empty_dir {
+          }
         }
       }
     }

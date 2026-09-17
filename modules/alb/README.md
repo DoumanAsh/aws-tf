@@ -10,6 +10,10 @@ Requires to create [IngressClass](https://docs.aws.amazon.com/eks/latest/usergui
 
 [alb-ingressclass](../alb-ingressclass) can be used to set it up
 
+## Recommendations
+
+Consider to rely on AWS ALB's webhook to provide readiness gate when target gets registered by injecting namespace where you run services with following label: `elbv2.k8s.aws/pod-readiness-gate-inject: enabled`
+
 ## Required parameters
 
 | Parameter               | Description |
@@ -30,16 +34,17 @@ Requires to create [IngressClass](https://docs.aws.amazon.com/eks/latest/usergui
 
 ## Optional parameters
 
-| Parameter              | Description |
-|------------------------|-------------|
-| `tags`                 | List of tags to attach to the resources |
-| `class_name`           | Ingress class name to be used. If not provided, MUST create default IngressClass |
-| `default_route`        | Defines `service_name` and `port` of the default route to be used in case no other route is matched. |
-| `protocol_version`     | Application protocol on destination pods. Defaults to HTTP1. Possible values: HTTP1, HTTP2, GRPC |
-| `ssl_policy`           | Specifies security policy to use for TLS handshake. [Reference](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/describe-ssl-policies.html#tls-security-policies) |
-| `target_type`          | Describes type of services you're targetting. Use 'ip' for direct network routing to the pod via ClustIP service. Use 'instance' to target NodePort services. Defaults to 'ip' |
-| `health_check_path`    | Specifies path to health check endpoint for all routes. If not set, defaults to AWS's defaults |
-| `health_check_port`    | Specifies port to use if health_check_path is specified. Defaults to 80 |
-| `security_group_id`    | Security group to attach to the ALB. If not created, AWS shall create security group automatically |
-| `idle_timeout_seconds` | Ingress Idle timeout value in seconds. Valid value should be in range of 1..=4_000. Defaults to 30s |
-| `keep_alive_time_seconds` | Ingress Keep alive time for client. I.e. how long allow connection to persist. Defaults to 7200s(2 hours) |
+| Parameter                            | Description |
+|--------------------------------------|-------------|
+| `tags`                               | List of tags to attach to the resources |
+| `class_name`                         | Ingress class name to be used. If not provided, MUST create default IngressClass |
+| `default_route`                      | Defines `service_name` and `port` of the default route to be used in case no other route is matched. |
+| `protocol_version`                   | Application protocol on destination pods. Defaults to HTTP1. Possible values: HTTP1, HTTP2, GRPC |
+| `ssl_policy`                         | Specifies security policy to use for TLS handshake. [Reference](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/describe-ssl-policies.html#tls-security-policies) |
+| `target_type`                        | Describes type of services you're targetting. Use 'ip' for direct network routing to the pod via ClustIP service. Use 'instance' to target NodePort services. Defaults to 'ip' |
+| `target_deregistration_delay_seconds`| The amount of time for Elastic Load Balancing to wait before deregistering a target. Defaults to 30s |
+| `health_check_path`                  | Specifies path to health check endpoint for all routes. If not set, defaults to AWS's defaults |
+| `health_check_port`                  | Specifies port to use if health_check_path is specified. Defaults to 80 |
+| `security_group_id`                  | Security group to attach to the ALB. If not created, AWS shall create security group automatically |
+| `idle_timeout_seconds`               | Ingress Idle timeout value in seconds. Valid value should be in range of 1..=4_000. Defaults to 30s |
+| `keep_alive_time_seconds`            | Ingress Keep alive time for client. I.e. how long allow connection to persist. Defaults to 7200s(2 hours) |

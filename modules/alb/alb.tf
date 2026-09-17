@@ -60,6 +60,7 @@ resource "kubernetes_ingress_v1" "alb" {
       "alb.ingress.kubernetes.io/backend-protocol-version" = var.protocol_version
       "alb.ingress.kubernetes.io/scheme"                   = "internet-facing"
       "alb.ingress.kubernetes.io/target-type"              = var.target_type
+      "alb.ingress.kubernetes.io/target-group-attributes"  = format("deregistration_delay.timeout_seconds=%d", var.target_deregistration_delay_seconds)
       "alb.ingress.kubernetes.io/load-balancer-name"       = var.name
       "alb.ingress.kubernetes.io/ssl-policy"               = var.ssl_policy
       # Use HTTPs only

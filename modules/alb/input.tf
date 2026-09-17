@@ -39,6 +39,12 @@ variable "target_type" {
   default     = "ip"
 }
 
+variable "target_deregistration_delay_seconds" {
+  type        = number
+  description = "The amount of time for Elastic Load Balancing to wait before deregistering a target. Defaults to 30s"
+  default     = 30
+}
+
 variable "hostname" {
   type        = string
   description = "Hostname for public endpoint to use"

@@ -123,7 +123,7 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
         } # busybox container
 
         # Apply label with version to identify node that already performed config init
-        container {
+        init_container {
           image = "registry.k8s.io/kubectl:${var.k8s_version}"
           name  = "node-label-apply"
           security_context {
@@ -179,6 +179,37 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
             "--overwrite"
           ]
         } # kubectl container
+
+        container {
+          name  = "pause"
+          image = "public.ecr.aws/docker/library/busybox:stable-musl"
+          security_context {
+            privileged                 = false
+            run_as_non_root            = true
+            run_as_user                = 911
+            run_as_group               = 911
+            allow_privilege_escalation = false
+            read_only_root_filesystem  = false
+            capabilities {
+              drop = ["all"]
+            }
+          }
+
+          resources {
+            limits = {
+              cpu    = "10m"
+              memory = "16Mi"
+            }
+            requests = {
+              cpu    = "10m"
+              memory = "16Mi"
+            }
+          }
+
+          command = ["/bin/sh", "-c"]
+          args    = ["sleep infinity"]
+        } # busybox container
+
 
         volume {
           name = "tmp"

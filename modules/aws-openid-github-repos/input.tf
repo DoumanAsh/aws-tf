@@ -13,3 +13,8 @@ variable "policy" {
   type        = string
   description = "ARN of the IAM policy to be used by the federation"
 }
+
+variable "aws_iam_role_name" {
+  description = "Role name to be created to assume federate access with github"
+  type        = string
+}

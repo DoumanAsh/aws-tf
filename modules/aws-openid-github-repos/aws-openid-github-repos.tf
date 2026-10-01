@@ -1,5 +1,10 @@
+locals {
+  github_oidc_provider_arn = var.aws_iam_openid_connect_provider_arn != null ? var.aws_iam_openid_connect_provider_arn : aws_iam_openid_connect_provider.github[0].arn
+}
+
 resource "aws_iam_openid_connect_provider" "github" {
-  url = "https://token.actions.githubusercontent.com"
+  count = var.aws_iam_openid_connect_provider_arn == null ? 1 : 0
+  url   = "https://token.actions.githubusercontent.com"
 
   client_id_list = [
     "sts.amazonaws.com",
@@ -12,7 +17,7 @@ data "aws_iam_policy_document" "github" {
 
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github.arn]
+      identifiers = [local.github_oidc_provider_arn]
     }
 
     condition {

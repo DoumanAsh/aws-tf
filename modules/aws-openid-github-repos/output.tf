@@ -1,4 +1,4 @@
 output "github_oidc_arn" {
   description = "Github openid connect provider ARN"
-  value       = aws_iam_openid_connect_provider.github.arn
+  value       = local.github_oidc_provider_arn
 }

@@ -79,3 +79,27 @@ resource "aws_iam_policy" "repository_erc_policy" {
   description = "Policy to pull/push repositories"
   policy      = data.aws_iam_policy_document.repository_erc_policy.json
 }
+
+data "aws_ecr_lifecycle_policy_document" "repository_erc_lifecycle" {
+  count = var.lifecycle_untagged_ttl_days != null ? 1 : 0
+  rule {
+    priority    = 1
+    description = "Clean up untagged images"
+    selection {
+      tag_status   = "untagged"
+      count_type   = "sinceImagePushed"
+      count_unit   = "days"
+      count_number = var.lifecycle_untagged_ttl_days
+    }
+
+    action {
+      type = "expire"
+    }
+  }
+}
+
+resource "aws_ecr_lifecycle_policy" "repository_erc_lifecycle" {
+  for_each   = var.lifecycle_untagged_ttl_days != null ? aws_ecr_repository.repository : {}
+  repository = each.value.name
+  policy     = data.aws_ecr_lifecycle_policy_document.repository_erc_lifecycle.0.json
+}

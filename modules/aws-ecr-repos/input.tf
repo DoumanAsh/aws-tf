@@ -44,3 +44,9 @@ variable "continious_scan_type" {
     error_message = "If continious_scan_type is set, then it should be ENHANCED or BASIC"
   }
 }
+
+variable "lifecycle_untagged_ttl_days" {
+  type        = number
+  description = "Number of days to live. Defaults to null"
+  default     = null
+}

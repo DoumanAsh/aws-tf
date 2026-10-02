@@ -16,13 +16,13 @@ variable "namespace" {
 variable "k8s_version" {
   description = "Kubernetes version to target. This is used to select version of registry.k8s.io/kubectl container that executes actions"
   type        = string
-  default     = "v1.34.9"
+  default     = "v1.36.5"
 }
 
 variable "settings_script" {
   description = "Settings to apply on the node using public.ecr.aws/docker/library/busybox. Defaults to adjusting swappiness to reasonable value"
   type        = string
   default     = <<-EOT
-    sysctl -w vm.swappiness=60
+    sysctl -w vm.swappiness=10
   EOT
 }

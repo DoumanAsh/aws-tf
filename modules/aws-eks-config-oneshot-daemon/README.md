@@ -17,7 +17,7 @@ Once pod launches it runs two containers
 Possible use cases:
 - Configure `vm.swappiness` in nodes that run AWS's `Bottlerocket` images to reduce it from 200 to 60 in order to reduce preference for swap memory
     - This is primary purpose of this module as high swap memory usage will lead to high CPU usage in small nodes
-    - Setting 60 will reduce swap memory usage from 500mb to 100mb and CPU usage by 30% (under requests taking 90%+ of node's RAM)
+    - Setting 10 will reduce swap memory usage to almost non-existing unless node really runs out of memory or get close to it.
     - This module was developed when EKS Auto used `Bottlerocket (EKS Auto, Standard) 2026.8.10 (aws-k8s-1.34-standard)`
 
 ## Optional parameters
@@ -26,5 +26,5 @@ Possible use cases:
 |------------------------|-------------|
 | `name`                 | Name to be used to initialize kubernetes resources. Defaults to `eks-sys-config-oneshot` |
 | `namespace`            | Namespace where to create resources. Defaults to `kube-system` |
-| `k8s_version`          | Container `registry.k8s.io/kubectl` version to use to apply node label. Defaults to `v1.34.9` |
-| `settings_script`      | Shell commands to run as part of node config init script. Defaults to `sysctl -w vm.swappiness=60` |
+| `k8s_version`          | Container `registry.k8s.io/kubectl` version to use to apply node label. Defaults to `v1.36.5` |
+| `settings_script`      | Shell commands to run as part of node config init script. Defaults to `sysctl -w vm.swappiness=10` |

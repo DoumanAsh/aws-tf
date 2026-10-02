@@ -189,7 +189,7 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
             run_as_user                = 911
             run_as_group               = 911
             allow_privilege_escalation = false
-            read_only_root_filesystem  = false
+            read_only_root_filesystem  = true
             capabilities {
               drop = ["all"]
             }
@@ -209,7 +209,6 @@ resource "kubernetes_daemon_set_v1" "aws-eks-config-oneshot-daemon" {
           command = ["/bin/sh", "-c"]
           args    = ["sleep infinity"]
         } # busybox container
-
 
         volume {
           name = "tmp"

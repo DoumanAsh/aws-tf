@@ -15,7 +15,7 @@ Once pod launches it runs two containers
 - Kubectl container to apply `${name}-version` label to mark node as configured, preventing future execution until `settings_script` changes
 
 Possible use cases:
-- Configure `vm.swappiness` in nodes that run AWS's `Bottlerocket` images to reduce it from 200 to 60 in order to reduce preference for swap memory
+- Configure `vm.swappiness` in nodes that run AWS's `Bottlerocket` images to reduce it from 200 to 10 in order to reduce preference for swap memory
     - This is primary purpose of this module as high swap memory usage will lead to high CPU usage in small nodes
     - Setting 10 will reduce swap memory usage to almost non-existing unless node really runs out of memory or get close to it.
     - This module was developed when EKS Auto used `Bottlerocket (EKS Auto, Standard) 2026.8.10 (aws-k8s-1.34-standard)`
